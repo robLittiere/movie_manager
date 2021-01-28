@@ -22,11 +22,11 @@ program
     })
     
 program 
-    .command("chooseByDate <input> <output> <date>")
+    .command("chooseByDate <input> <date> <isSort>")
     .alias("cbd")
     .description("choose movie by the date you want")
-    .action(function(input, output, date){
-        chooseMovie.chooseMovie(input, output, date)
+    .action(function(input, date, isSort){
+        chooseMovie.chooseMovie(input, date, isSort)
     })   
        
 program.parse(process.argv);
