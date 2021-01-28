@@ -1,18 +1,12 @@
 fs = require('fs')
+const sort = require('./sort.js');
 
 module.exports = {
     chooseMovie
 }
 
-<<<<<<< HEAD
 function chooseMovie(file, date, isSort) {
     fs.readFile(file, { encoding: 'utf8' }, function (err, data) {
-=======
-function chooseMovie(file, new_file, date){
-    fs.readFile(file, {encoding: 'utf8'}, function (err, data){
-        startDate = Date.now();
-        const movieArray = [];
->>>>>>> 5bbbdec5a339421caeaaf431d31bf371dfc228d9
 
         if (err) {
             return console.error(err);
@@ -32,25 +26,17 @@ function chooseMovie(file, new_file, date){
             }
 
         } else if (isSort == "true") {
-            let tab = [1, 2, 4, 5, 6, 8, 9, 10, 2010, 2015, 2018, 2018, 2020, 2030]
+            let moviePerDate = []
             console.log(search(tab, date));
 
         } else {
             console.log("unaivaible");
         }
-<<<<<<< HEAD
-=======
-        let string = JSON.stringify(movieArray, null, 4)
-        fs.writeFile(new_file, string, function(err){
-            if(err) return console.error(err);
-        })   
-        let endDate = Date.now();
-        console.log("The movies released in %s have been listed in the file %s, it took me %s seconds to do it",date, new_file, ((endDate - startDate) / 1000)) 
->>>>>>> 5bbbdec5a339421caeaaf431d31bf371dfc228d9
     })
 }
 
 function search(file, date) {
+    
     milieux = Math.floor(file.length / 2);
     let leftfile = file.slice(0, milieux)
     let rightfile = file.slice(milieux, file.length)
@@ -63,9 +49,19 @@ function search(file, date) {
         //console.log(file[milieux]);
         return search(leftfile, date);
 
-    } else {
+    } else if(file[milieux] == date) {
         return milieux;
     }
 }
 
+fs.readFile(file, {encoding: 'utf8'}, function (err, data){
+    startDate = Date.now();
+    if (err){
+        return console.error(err);
+    }
+    
+    //Parse all movies in json object
+    let json = JSON.parse(data)
+    sort.sort_date(json)
+})
 

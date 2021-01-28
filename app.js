@@ -30,11 +30,7 @@ program
     })    
     
 program 
-<<<<<<< HEAD
     .command("chooseByDate <input> <date> <isSort>")
-=======
-    .command("chooseByDate <input> <output> <date>") 
->>>>>>> 5bbbdec5a339421caeaaf431d31bf371dfc228d9
     .alias("cbd")
     .description("choose movie by the date you want")
     .action(function(input, date, isSort){
