@@ -1,7 +1,7 @@
 fs = require('fs')
 
 module.exports = {
-    transform, 
+    transform 
 }
 
 function transform(file, new_file){
