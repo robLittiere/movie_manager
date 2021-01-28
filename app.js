@@ -1,6 +1,7 @@
 const { program, command } = require('commander');
 const transform = require('./transform.js');
 const sort = require('./sort.js');
+const chooseMovie = require('./chooseDate.js')
 
 program.version('0.0.1');
 
@@ -19,16 +20,14 @@ program
     .action(function(input, output){
         sort.sort_title(input, output);
     })
-
-
-/*
-program    
-    .arguments("<input> <output>")
-    .option('-t, --transform, transform', 'add the release year of a film next to it title')
-    .action(function(input, output){
-        transform.transform(input, output);
-    })
-*/    
     
+program 
+    .command("chooseByDate <input> <output> <date>")
+    .alias("cbd")
+    .description("choose movie by the date you want")
+    .action(function(input, output, date){
+        chooseMovie.chooseMovie(input, output, date)
+    })   
+       
 program.parse(process.argv);
 
