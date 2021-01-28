@@ -1,8 +1,8 @@
 const { program, command } = require('commander');
-const transform = require('./transform.js');
-const sort = require('./sort.js');
-const chooseMovie = require('./chooseDate.js')
-const search_keyword = require('./search_keyword.js')
+const transform = require('./Functions/transform.js');
+const sort = require('./Functions/sort.js');
+const chooseMovie = require('./Functions/chooseDate.js')
+const search_keyword = require('./Functions/search_keyword.js')
 
 program.version('0.0.1');
 
