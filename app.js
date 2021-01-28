@@ -2,6 +2,7 @@ const { program, command } = require('commander');
 const transform = require('./transform.js');
 const sort = require('./sort.js');
 const chooseMovie = require('./chooseDate.js')
+const search_keyword = require('./search_keyword.js')
 
 program.version('0.0.1');
 
@@ -29,6 +30,7 @@ program
         sort.sort_date(input, output);
     })    
     
+/*    
 program 
     .command("chooseByDate <input> <date> <isSort>")
     .alias("cbd")
@@ -36,5 +38,14 @@ program
     .action(function(input, date, isSort){
         chooseMovie.chooseMovie(input, date, isSort)
     })   
+*/    
+
+program 
+    .command("search_key_word <file> <key_word> <genre>")
+    .alias("skw")
+    .description("Find the most recent movie in a specified genre, in which a keyword can be found in the description")
+    .action((file, key_word, genre) => {
+        search_keyword.findMovie(file, key_word, genre)
+    })       
        
 program.parse(process.argv);

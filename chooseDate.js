@@ -25,43 +25,69 @@ function chooseMovie(file, date, isSort) {
                 }
             }
 
-        } else if (isSort == "true") {
+        } 
+
+        else if (isSort == "true") {
             let moviePerDate = []
             console.log(search(tab, date));
 
-        } else {
+        } 
+        else {
             console.log("unaivaible");
         }
     })
 }
 
-function search(file, date) {
+function search(json, date, movie_year) {
     
-    milieux = Math.floor(file.length / 2);
-    let leftfile = file.slice(0, milieux)
-    let rightfile = file.slice(milieux, file.length)
+    milieux = Math.floor(json.length / 2);
+    let leftJson = json.slice(0, milieux)
+    let rightJson = json.slice(milieux, json.length)
 
-    if (file[milieux] < date) {
+    if (json[milieux].release_date < date) {
         //console.log(file[milieux]);
-        return search(rightfile, date) + leftfile.length;
+        return search(rightJson, date) + leftJson.length;
 
-    } else if (file[milieux] > date) {
+    } 
+
+    else if (json[milieux].release_date > date) {
         //console.log(file[milieux]);
-        return search(leftfile, date);
+        return search(leftJson, date);
 
-    } else if(file[milieux] == date) {
-        return milieux;
+    } 
+
+    else if(json[milieux].release_date == date) {
+        movie_year.push(json[milieux])
+        json.slice(milieux, 1)
+        return search(json, date, movie_year);
     }
+
+    else if(milieux == 0 || milieux == json.length -1){
+        return movie_year
+    }
+
+
 }
 
-fs.readFile(file, {encoding: 'utf8'}, function (err, data){
-    startDate = Date.now();
-    if (err){
-        return console.error(err);
-    }
+function quick_sorting(file){
     
-    //Parse all movies in json object
-    let json = JSON.parse(data)
-    sort.sort_date(json)
-})
+    fs.readFile(file, {encoding: 'utf8'}, function (err, data){
+        startDate = Date.now();
+
+        if (err){
+            return console.error(err);
+        }
+        
+        //Parse all movies in json object
+        let json = JSON.parse(data)
+        
+        sort.tri_rapide(json, 0, json.length-1, 'release_date');
+        let movie_year = []
+        let new_movie_year = search(json, '2018', movie_year)
+        console.log(new_movie_year)
+
+        
+    })
+};    
+
 
