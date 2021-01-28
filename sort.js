@@ -96,7 +96,7 @@ function tri_rapide(t, premier, dernier, property){
 function sort_title(file, new_file){
     
     fs.readFile(file, {encoding: 'utf8'}, function (err, data){
-        startDate = Date.now();
+        let startDate = Date.now();
 
         if (err){
             return console.error(err);
