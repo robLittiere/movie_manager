@@ -4,8 +4,15 @@ module.exports = {
     chooseMovie
 }
 
+<<<<<<< HEAD
 function chooseMovie(file, date, isSort) {
     fs.readFile(file, { encoding: 'utf8' }, function (err, data) {
+=======
+function chooseMovie(file, new_file, date){
+    fs.readFile(file, {encoding: 'utf8'}, function (err, data){
+        startDate = Date.now();
+        const movieArray = [];
+>>>>>>> 5bbbdec5a339421caeaaf431d31bf371dfc228d9
 
         if (err) {
             return console.error(err);
@@ -31,6 +38,15 @@ function chooseMovie(file, date, isSort) {
         } else {
             console.log("unaivaible");
         }
+<<<<<<< HEAD
+=======
+        let string = JSON.stringify(movieArray, null, 4)
+        fs.writeFile(new_file, string, function(err){
+            if(err) return console.error(err);
+        })   
+        let endDate = Date.now();
+        console.log("The movies released in %s have been listed in the file %s, it took me %s seconds to do it",date, new_file, ((endDate - startDate) / 1000)) 
+>>>>>>> 5bbbdec5a339421caeaaf431d31bf371dfc228d9
     })
 }
 

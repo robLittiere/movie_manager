@@ -6,6 +6,7 @@ module.exports = {
 
 function transform(file, new_file){
     fs.readFile(file, {encoding: 'utf8'}, function (err, data){
+        startDate = Date.now();
         if (err){
             return console.error(err);
         }
@@ -28,6 +29,8 @@ function transform(file, new_file){
         fs.writeFile(new_file, string, function(err){
             if(err) return console.error(err);
         })
+        let endDate = Date.now();
+        console.log("The release year has been added to the title of your movies in the file %s, it took me %s seconds to do it", new_file, ((endDate - startDate) / 1000)) 
     
         //console.log(json[i]["title"] += ' (' + year + ')')
     })
