@@ -6,6 +6,7 @@ module.exports = {
 
 function chooseMovie(file, new_file, date){
     fs.readFile(file, {encoding: 'utf8'}, function (err, data){
+        startDate = Date.now();
         const movieArray = [];
 
         if (err){
@@ -23,11 +24,12 @@ function chooseMovie(file, new_file, date){
 
             } 
         }
-        
         let string = JSON.stringify(movieArray, null, 4)
         fs.writeFile(new_file, string, function(err){
             if(err) return console.error(err);
         })   
+        let endDate = Date.now();
+        console.log("The movies released in %s have been listed in the file %s, it took me %s seconds to do it",date, new_file, ((endDate - startDate) / 1000)) 
     })
 }
 
