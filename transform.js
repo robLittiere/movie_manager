@@ -1,3 +1,9 @@
+fs = require('fs')
+
+module.exports = {
+    transform, 
+}
+
 function transform(file, new_file){
     fs.readFile(file, {encoding: 'utf8'}, function (err, data){
         if (err){
@@ -13,10 +19,7 @@ function transform(file, new_file){
             let year = new Date(json[i]["release_date"] * 1000).getFullYear();   
             //Write year next to the title
             (json[i]["title"] += ' (' + year + ')')
-    
         }
-    
-    
     
         //Write json objects in new file
         //Convert JSON objects to beautiful string
@@ -24,11 +27,8 @@ function transform(file, new_file){
         
         fs.writeFile(new_file, string, function(err){
             if(err) return console.error(err);
-    
         })
     
-            
-            
-            //console.log(json[i]["title"] += ' (' + year + ')')
+        //console.log(json[i]["title"] += ' (' + year + ')')
     })
 }
