@@ -1,93 +1,83 @@
 fs = require('fs')
 const sort = require('./sort.js');
+const getImages = require('./GetImage')
 
 module.exports = {
     chooseMovie
 }
 
-function chooseMovie(file, date, isSort) {
+function chooseMovie(file, date, isSort, path) {
     fs.readFile(file, { encoding: 'utf8' }, function (err, data) {
-
+        let startDate = Date.now();
         if (err) {
             return console.error(err);
         }
+        let moviePerDate = [];
+        let json = JSON.parse(data)
 
         if (isSort == "false") {
-            let json = JSON.parse(data)
-
             for (let i = 0; i < json.length; i++) {
 
                 var annee = new Date(json[i]["release_date"] * 1000).getFullYear();
 
                 if (annee == date) {
-                    let choosedMovie = (json[i]["title"] += ' (' + annee + ')')
-                    console.log(choosedMovie);
+                    moviePerDate.push((json[i]))
+
                 }
             }
+            let endDate = Date.now()
 
+            for (let i = 0; i < moviePerDate.length; i++){
+                console.log(moviePerDate[i].title)
+            }
+
+            console.log('Here on top are the movies released in %s, It took me %s seconds to order them', date, ((endDate - startDate) / 1000))    
         } 
 
-        else if (isSort == "true") {
-            let moviePerDate = []
-            console.log(search(tab, date));
 
-        } 
-        else {
-            console.log("unaivaible");
-        }
+        
+        //If a path was indicated, it means the user is expecting the posters in that particular path
+        if(path != undefined){
+            getImages.getImagesFromMovies(moviePerDate, path)
+            // Final endDate after all processes from this function
+            let finalEndDate = Date.now()
+            console.log('The total process of ordering your movies by the year %s and downloading their poster took me %s seconds to do', date, ((finalEndDate - startDate) / 1000))
+        }   
     })
 }
 
-function search(json, date, movie_year) {
-    
-    milieux = Math.floor(json.length / 2);
-    let leftJson = json.slice(0, milieux)
-    let rightJson = json.slice(milieux, json.length)
+function get_fast_date(file, date) {
+    index = Math.floor(file.length / 2); //take the middle index of "file"
+    let leftfile = file.slice(0, index) //cut the array in half, begin of 0 to "index"
+    let rightfile = file.slice(index, file.length) //cut the array in half, begin of "index" to the file length
+    let year = new Date(file[index]["release_date"] * 1000).getFullYear();
 
-    if (json[milieux].release_date < date) {
-        //console.log(file[milieux]);
-        return search(rightJson, date) + leftJson.length;
-
-    } 
-
-    else if (json[milieux].release_date > date) {
-        //console.log(file[milieux]);
-        return search(leftJson, date);
-
-    } 
-
-    else if(json[milieux].release_date == date) {
-        movie_year.push(json[milieux])
-        json.slice(milieux, 1)
-        return search(json, date, movie_year);
+    if (year < date) {
+        //console.log(file[index]);
+        return get_fast_date(rightfile, date) + leftfile; //return the function with the right part of the array in arguments
+ 
+    } else if (year > date) {
+        //console.log(file[index]);
+        return get_fast_date(leftfile, date); //return the function with the right part of the array in arguments
+ 
+    } else if (year == date) {
+        choosedMovies.push(file[index])
+        let offset = index + 1
+        for (offset; offset < file.length; offset++) {
+            let year = new Date(file[offset]["release_date"] * 1000).getFullYear()
+            if(year == date){
+                choosedMovies.push(file[offset])
+                console.log(choosedMovies)
+            }
+        }    
+        for (index -= 1; index != 0; index--){
+            let year = new Date(file[index]["release_date"] * 1000).getFullYear()
+            if (year == date){
+                choosedMovies.push(file[index])
+                console.log(choosedMovies)
+            }
+        }    
+    return choosedMovies
+            
     }
-
-    else if(milieux == 0 || milieux == json.length -1){
-        return movie_year
-    }
-
-
 }
-
-function quick_sorting(file){
-    
-    fs.readFile(file, {encoding: 'utf8'}, function (err, data){
-        startDate = Date.now();
-
-        if (err){
-            return console.error(err);
-        }
-        
-        //Parse all movies in json object
-        let json = JSON.parse(data)
-        
-        sort.tri_rapide(json, 0, json.length-1, 'release_date');
-        let movie_year = []
-        let new_movie_year = search(json, '2018', movie_year)
-        console.log(new_movie_year)
-
-        
-    })
-};    
-
-
